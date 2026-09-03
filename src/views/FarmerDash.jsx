@@ -113,98 +113,20 @@ export default function FarmerDash({ language = 'en' }) {
   }, [showStatus]);
 
     return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Dashboard Greetings Header */}
-      <div>
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{t.title}</h1>
-        <p className="text-slate-500 mt-1 text-sm">{t.subtitle}</p>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <div>
+          <h1 className="text-2xl font-extrabold text-slate-900">Welcome to KrishiLink Dashboard</h1>
+          <p className="text-xs text-slate-400">Track real-time pricing indicators and manage crop volumes.</p>
+        </div>
+        {/* Navigation Action Hook */}
+        <button 
+          onClick={navigateToRegister}
+          className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all"
+        >
+          + Register New Crop
+        </button>
       </div>
-
-      {/* Global Form Post Banner Confirmation */}
-      {showStatus && (
-        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl shadow-sm transition-all">
-          <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-          <p className="text-sm font-medium">{t.successMsg}</p>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Left Side: Yield Registration Input Node */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <div className="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
-              <PlusCircle className="h-5 w-5 text-emerald-600" />
-              <h2 className="font-semibold text-base text-slate-800">{t.newListing}</h2>
-            </div>
-            
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{t.cropName}</label>
-                <input 
-                  type="text" name="cropName" value={formData.cropName} onChange={handleInputChange} required
-                  placeholder="e.g., Onion, Wheat, Turmeric" 
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{t.quantity}</label>
-                  <div className="relative">
-                    <Scale className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                    <input 
-                      type="number" name="quantity" value={formData.quantity} onChange={handleInputChange} required
-                      placeholder="50" min="1"
-                      className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Base Price</label>
-                  <div className="relative">
-                    <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                    <input 
-                      type="number" name="basePrice" value={formData.basePrice} onChange={handleInputChange} required
-                      placeholder="4500" min="1"
-                      className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">{t.location}</label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                  <input 
-                    type="text" name="location" value={formData.location} onChange={handleInputChange} required
-                    placeholder="e.g., Nashik, Amravati" 
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
-                  />
-                </div>
-              </div>
-
-              <button 
-                type="submit" disabled={isLoading}
-                className="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow transition-all inline-flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>{t.submitting}</span>
-                  </>
-                ) : (
-                  <>
-                    <Sprout className="h-4 w-4" />
-                    <span>{t.submitBtn}</span>
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-
         {/* Right Side: Data Visualization & ML Pipeline Framework Panels */}
         <div className="lg:col-span-2 space-y-8">
           
@@ -299,8 +221,6 @@ export default function FarmerDash({ language = 'en' }) {
         </div>
         {/* End of Right Side Column */}
       </div>
-      {/* End of Main Grid */}
-    </div>
     // End of Main Dashboard Wrap
   );
 }
