@@ -31,12 +31,9 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
               <span className="font-bold text-xl tracking-wide block leading-tight">
                 KrishiLink
               </span>
-              <span className="text-xs text-emerald-200 block">
-                SIH26132 Price Discovery Platform
-              </span>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-6">    
             <div className="relative">
               <button 
