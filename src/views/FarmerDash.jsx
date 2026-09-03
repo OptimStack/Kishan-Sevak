@@ -127,7 +127,6 @@ export default function FarmerDash({ language = 'en' }) {
           + Register New Crop
         </button>
       </div>
-
         {/* Right Side: Data Visualization & ML Pipeline Framework Panels */}
         <div className="lg:col-span-2 space-y-8">
           
