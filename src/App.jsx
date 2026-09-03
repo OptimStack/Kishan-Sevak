@@ -1,9 +1,7 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import FarmerDash from './views/FarmerDash';
-import BuyerDash from './views/BuyerDash';
-// import AdminDash from './views/AdminDash';
+import { Navbar, Croprow, Pricecard } from "#components";
+import { FarmerDash, BuyerDash, AdminDash } from "#views";
 
 const App = () => {
   const [role, setRole] = useState('farmer'); // Default view state
