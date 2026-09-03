@@ -5,7 +5,7 @@ import FarmerDash from './views/FarmerDash';
 import BuyerDash from './views/BuyerDash';
 // import AdminDash from './views/AdminDash';
 
-export default function App() {
+const App = () => {
   const [role, setRole] = useState('farmer'); // Default view state
   const [lang, setLang] = useState('en');    // Default language configuration
 
@@ -22,3 +22,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
