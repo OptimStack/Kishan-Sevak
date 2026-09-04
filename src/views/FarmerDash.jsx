@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircle, TrendingUp, Sprout, IndianRupee, MapPin, Scale, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { PlusCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
 
 const translations = {
   en: {
     title: "Farmer Dashboard",
     subtitle: "List crops, manage live offerings, and monitor ML price predictions.",
-    newListing: "Register New Crop Harvest",
-    cropName: "Crop Name",
-    quantity: "Quantity (Quintals)",
-    basePrice: "Expected Base Price (per Qtl)",
-    location: "Harvesting District",
-    submitBtn: "Publish to Live Marketplace",
-    submitting: "Syncing with MongoDB...",
+    publishBtn: "Publish New Crop",
     liveInventory: "Your Live Crop Listings",
     aiInsights: "AI Price Forecasting Engine (Model.py)",
     aiNote: "Our Random Forest Regressor evaluates market arrivals and rainfall indices to forecast future prices.",
@@ -22,13 +16,7 @@ const translations = {
   mr: {
     title: "शेतकरी डॅशबोर्ड",
     subtitle: "पिकांची यादी करा, थेट ऑफर व्यवस्थापित करा आणि AI किंमत अंदाजांचे निरीक्षण करा.",
-    newListing: "नवीन पीक कापणीची नोंदणी करा",
-    cropName: "पिकाचे नाव",
-    quantity: "प्रमाण (क्विंटल)",
-    basePrice: "अपेक्षित मूळ किंमत (प्रति क्विंटल)",
-    location: "कापणीचा जिल्हा",
-    submitBtn: "थेट बाजारात प्रकाशित करा",
-    submitting: "MongoDB सह सिंक होत आहे...",
+    publishBtn: "नवीन पीक प्रकाशित करा",
     liveInventory: "तुमची थेट पीक यादी",
     aiInsights: "AI किंमत अंदाज इंजिन (Model.py)",
     aiNote: "आमचे मॉडेल प्रादेशिक किमतींचा अंदाज लावण्यासाठी बाजारातील आवक आणि पावसाच्या निर्देशांकाचे विश्लेषण करते.",
@@ -39,13 +27,7 @@ const translations = {
   hi: {
     title: "किसान डैशबोर्ड",
     subtitle: "फसलों की सूची बनाएं, लाइव ऑफ़र प्रबंधित करें और एआई मूल्य पूर्वानुमानों की निगरानी करें।",
-    newListing: "नई फसल उपज का पंजीकरण करें",
-    cropName: "फसल का नाम",
-    quantity: "मात्रा (क्विंटल)",
-    basePrice: "अपेक्षित आधार लागत (प्रति क्विंटल)",
-    location: "कटाई का जिला",
-    submitBtn: "लाइव मार्केटप्लेस में प्रकाशित करें",
-    submitting: "MongoDB से सिंक हो रहा है...",
+    publishBtn: "नई फसल प्रकाशित करें",
     liveInventory: "आपकी लाइव फसल सूची",
     aiInsights: "एआई मूल्य पूर्वानुमान इंजन (Model.py)",
     aiNote: "हमारा मॉडल क्षेत्रीय कीमतों का अनुमान लगाने के लिए बाजार आवक और वर्षा सूचकांकों का विश्लेषण करता है।",
@@ -55,55 +37,44 @@ const translations = {
   }
 };
 
-export default function FarmerDash({ language = 'en' }) {
+// FarmerDash is now dashboard-only. Registration lives in the separate
+// CropRegistration view — App owns which one is on screen (`currentView`),
+// so this component just asks App to switch views via `navigateToRegister`.
+export default function FarmerDash({ language = 'en', navigateToRegister, justPublished = null }) {
   const t = translations[language] || translations.en;
 
-  // Form State Hooks
-  const [formData, setFormData] = useState({ cropName: '', quantity: '', basePrice: '', location: '' });
-  const [isLoading, setIsLoading] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
 
-  // Live Inventory pulled dynamically out of MongoDB Atlas
   const [myListings, setMyListings] = useState([
     { id: '1', cropName: 'Soybean (सोयाबीन)', quantity: 45, basePrice: 4600, location: 'Latur', highestBid: 4850, buyer: 'Marico Industries' },
     { id: '2', cropName: 'Cotton (कापूस)', quantity: 20, basePrice: 6800, location: 'Yavatmal', highestBid: null, buyer: null }
   ]);
 
-  // ML-Driven price forecasting datasets parsed out of Model.py
   const aiPredictions = [
     { crop: 'Soybean', currentMandi: 4650, predictedNextMonth: 5100, trend: 'up', confidence: '94%', recommendation: 'Hold harvest. Prices expected to rise by 9.6% due to lower market arrival projections.' },
     { crop: 'Cotton', currentMandi: 7100, predictedNextMonth: 6750, trend: 'down', confidence: '89%', recommendation: 'Sell immediately. High international supply loops are expected to depress regional rates.' }
   ];
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Simulated Full-Stack Fetch Route pointing towards Flask Backend API
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.cropName || !formData.quantity || !formData.basePrice) return;
-
-    setIsLoading(true);
-    
-    // Simulate HTTP Network payload latency to Backend.py endpoints
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-
-    const newCrop = {
-      id: Date.now().toString(),
-      cropName: formData.cropName,
-      quantity: parseFloat(formData.quantity),
-      basePrice: parseFloat(formData.basePrice),
-      location: formData.location || 'Maharashtra Regional',
-      highestBid: null,
-      buyer: null
-    };
-
-    setMyListings([newCrop, ...myListings]);
-    setFormData({ cropName: '', quantity: '', basePrice: '', location: '' });
-    setIsLoading(false);
-    setShowStatus(true);
-  };
+  // If App hands us a crop just published from CropRegistration, add it
+  // to the live listings and show the success banner.
+  useEffect(() => {
+    if (justPublished) {
+      setMyListings((prev) => [
+        {
+          id: Date.now().toString(),
+          cropName: justPublished.cropName,
+          quantity: parseFloat(justPublished.quantity) || 0,
+          basePrice: parseFloat(justPublished.basePrice) || 0,
+          location: justPublished.district || 'Maharashtra Regional',
+          highestBid: null,
+          buyer: null
+        },
+        ...prev
+      ]);
+      setShowStatus(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [justPublished]);
 
   useEffect(() => {
     if (showStatus) {
@@ -112,31 +83,42 @@ export default function FarmerDash({ language = 'en' }) {
     }
   }, [showStatus]);
 
-    return (
+  return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Welcome to KrishiLink Dashboard</h1>
-          <p className="text-xs text-slate-400">Track real-time pricing indicators and manage crop volumes.</p>
-        </div>
-        {/* Navigation Action Hook */}
-        <button 
-          onClick={navigateToRegister}
-          className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all"
-        >
-          + Register New Crop
-        </button>
+      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h1 className="text-2xl font-extrabold text-slate-900">{t.title}</h1>
+        <p className="text-xs text-slate-400">{t.subtitle}</p>
       </div>
-        {/* Right Side: Data Visualization & ML Pipeline Framework Panels */}
-        <div className="lg:col-span-2 space-y-8">
-          
-          {/* Active Inventory Block */}
+
+      {showStatus && (
+        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium px-4 py-3 rounded-lg">
+          <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
+          {t.successMsg}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-6">
+        {/* Left sidebar column */}
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+            <button
+              onClick={navigateToRegister}
+              className="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all flex items-center justify-center gap-1.5"
+            >
+              <PlusCircle className="h-4 w-4" />
+              {t.publishBtn}
+            </button>
+          </div>
+        </div>
+
+        {/* Center column */}
+        <div className="space-y-8 max-w-3xl w-full mx-auto">
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
             <h2 className="font-semibold text-base text-slate-800 mb-4 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
               {t.liveInventory}
             </h2>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
@@ -172,7 +154,6 @@ export default function FarmerDash({ language = 'en' }) {
             </div>
           </div>
 
-          {/* AI Predictive Analytics Container */}
           <div className="border border-indigo-100 bg-gradient-to-br from-indigo-50/30 to-slate-50/50 rounded-xl p-6 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 mb-2">
@@ -208,7 +189,7 @@ export default function FarmerDash({ language = 'en' }) {
                       </div>
                     </div>
                   </div>
-                    <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg border-l-2 border-indigo-500 leading-normal mt-2">
+                  <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg border-l-2 border-indigo-500 leading-normal mt-2">
                     <span className="font-bold text-indigo-900 block mb-0.5">Model Recommendation (Acc: {pred.confidence}):</span>
                     {pred.recommendation}
                   </div>
@@ -216,11 +197,8 @@ export default function FarmerDash({ language = 'en' }) {
               ))}
             </div>
           </div>
-          {/* End of AI Predictive Analytics Container */}
-
         </div>
-        {/* End of Right Side Column */}
       </div>
-    // End of Main Dashboard Wrap
+    </div>
   );
 }
