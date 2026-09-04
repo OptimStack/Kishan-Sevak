@@ -3,7 +3,7 @@ import {
   Search, MapPin, Scale, IndianRupee, Gavel, Filter, Building,
   CheckCircle2, AlertTriangle, TrendingUp, TrendingDown, Sparkles, X
 } from 'lucide-react';
-import { listingsStore } from './listingsstore';
+import { listingsStore } from './Listingsstore';
 
 const translations = {
   en: {
