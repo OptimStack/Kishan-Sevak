@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { PlusCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
+import React, { useSyncExternalStore } from 'react';
+import { PlusCircle, TrendingUp } from 'lucide-react';
+import { listingsStore } from './listingsstore';
 
 const translations = {
   en: {
@@ -10,8 +11,7 @@ const translations = {
     aiInsights: "AI Price Forecasting Engine (Model.py)",
     aiNote: "Our Random Forest Regressor evaluates market arrivals and rainfall indices to forecast future prices.",
     noBids: "Waiting for buyer bids...",
-    activeBid: "Highest Bid: ",
-    successMsg: "Crop listed and synced to MongoDB securely!"
+    activeBid: "Highest Bid: "
   },
   mr: {
     title: "शेतकरी डॅशबोर्ड",
@@ -21,8 +21,7 @@ const translations = {
     aiInsights: "AI किंमत अंदाज इंजिन (Model.py)",
     aiNote: "आमचे मॉडेल प्रादेशिक किमतींचा अंदाज लावण्यासाठी बाजारातील आवक आणि पावसाच्या निर्देशांकाचे विश्लेषण करते.",
     noBids: "खरेदीदार बोलीची वाट पाहत आहे...",
-    activeBid: "सर्वोच्च बोली: ",
-    successMsg: "पीक यशस्वीरित्या सूचीबद्ध केले आणि सुरक्षितपणे सिंक केले!"
+    activeBid: "सर्वोच्च बोली: "
   },
   hi: {
     title: "किसान डैशबोर्ड",
@@ -32,56 +31,26 @@ const translations = {
     aiInsights: "एआई मूल्य पूर्वानुमान इंजन (Model.py)",
     aiNote: "हमारा मॉडल क्षेत्रीय कीमतों का अनुमान लगाने के लिए बाजार आवक और वर्षा सूचकांकों का विश्लेषण करता है।",
     noBids: "खरीदार की बोली का इंतजार है...",
-    activeBid: "उच्चतम बोली: ",
-    successMsg: "फसल को सूचीबद्ध किया गया और सुरक्षित रूप से सिंक किया गया!"
+    activeBid: "उच्चतम बोली: "
   }
 };
 
-// FarmerDash is now dashboard-only. Registration lives in the separate
+// FarmerDash is dashboard-only. Registration lives in the separate
 // CropRegistration view — App owns which one is on screen (`currentView`),
 // so this component just asks App to switch views via `navigateToRegister`.
-export default function FarmerDash({ language = 'en', navigateToRegister, justPublished = null }) {
+//
+// Listings now come from the shared listingsStore (localStorage-backed),
+// not local state — so anything published here shows up on BuyerDash too,
+// and persists across reloads/tabs of this browser.
+export default function FarmerDash({ language = 'en', navigateToRegister }) {
   const t = translations[language] || translations.en;
 
-  const [showStatus, setShowStatus] = useState(false);
-
-  const [myListings, setMyListings] = useState([
-    { id: '1', cropName: 'Soybean (सोयाबीन)', quantity: 45, basePrice: 4600, location: 'Latur', highestBid: 4850, buyer: 'Marico Industries' },
-    { id: '2', cropName: 'Cotton (कापूस)', quantity: 20, basePrice: 6800, location: 'Yavatmal', highestBid: null, buyer: null }
-  ]);
+  const myListings = useSyncExternalStore(listingsStore.subscribe, listingsStore.getListings);
 
   const aiPredictions = [
     { crop: 'Soybean', currentMandi: 4650, predictedNextMonth: 5100, trend: 'up', confidence: '94%', recommendation: 'Hold harvest. Prices expected to rise by 9.6% due to lower market arrival projections.' },
     { crop: 'Cotton', currentMandi: 7100, predictedNextMonth: 6750, trend: 'down', confidence: '89%', recommendation: 'Sell immediately. High international supply loops are expected to depress regional rates.' }
   ];
-
-  // If App hands us a crop just published from CropRegistration, add it
-  // to the live listings and show the success banner.
-  useEffect(() => {
-    if (justPublished) {
-      setMyListings((prev) => [
-        {
-          id: Date.now().toString(),
-          cropName: justPublished.cropName,
-          quantity: parseFloat(justPublished.quantity) || 0,
-          basePrice: parseFloat(justPublished.basePrice) || 0,
-          location: justPublished.district || 'Maharashtra Regional',
-          highestBid: null,
-          buyer: null
-        },
-        ...prev
-      ]);
-      setShowStatus(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [justPublished]);
-
-  useEffect(() => {
-    if (showStatus) {
-      const timer = setTimeout(() => setShowStatus(false), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [showStatus]);
 
   return (
     <div className="space-y-6">
@@ -89,13 +58,6 @@ export default function FarmerDash({ language = 'en', navigateToRegister, justPu
         <h1 className="text-2xl font-extrabold text-slate-900">{t.title}</h1>
         <p className="text-xs text-slate-400">{t.subtitle}</p>
       </div>
-
-      {showStatus && (
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium px-4 py-3 rounded-lg">
-          <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
-          {t.successMsg}
-        </div>
-      )}
 
       <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-6">
         {/* Left sidebar column */}
@@ -133,15 +95,15 @@ export default function FarmerDash({ language = 'en', navigateToRegister, justPu
                   {myListings.map((item) => (
                     <tr key={item.id} className="hover:bg-slate-50/40 transition-colors">
                       <td className="py-3.5 px-4 font-semibold text-slate-900">{item.cropName}</td>
-                      <td className="py-3.5 px-4 text-slate-600 font-medium">{item.quantity} Qtl</td>
-                      <td className="py-3.5 px-4 text-slate-600 font-medium">₹{item.basePrice}</td>
+                      <td className="py-3.5 px-4 text-slate-600 font-medium">{item.quantity} {item.unit}</td>
+                      <td className="py-3.5 px-4 text-slate-600 font-medium">₹{item.minAskingPrice}</td>
                       <td className="py-3.5 px-4 text-right">
                         {item.highestBid ? (
                           <div className="inline-block text-right">
                             <span className="text-emerald-700 font-bold bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded text-xs">
                               {t.activeBid}₹{item.highestBid}
                             </span>
-                            <span className="block text-[10px] text-slate-400 mt-0.5">via {item.buyer}</span>
+                            <span className="block text-[10px] text-slate-400 mt-0.5">via {item.currentBuyer}</span>
                           </div>
                         ) : (
                           <span className="text-slate-400 text-xs italic">{t.noBids}</span>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 import {
   Search, MapPin, Scale, IndianRupee, Gavel, Filter, Building,
   CheckCircle2, AlertTriangle, TrendingUp, TrendingDown, Sparkles, X
 } from 'lucide-react';
+import { listingsStore } from './listingsstore';
 
 const translations = {
   en: {
@@ -191,15 +192,29 @@ export default function BuyerDash({ language = 'en' }) {
   const [statusMessage, setStatusMessage] = useState(null);
   const [myBids, setMyBids] = useState([]);
 
-  // Mocked state simulating data pulled dynamically out of MongoDB Atlas.
-  // requiredQuantity/suppliedQuantity drive the Price Progress section;
-  // basePrice/highestBid drive the bidding validation, same as before.
-  const [auctions, setAuctions] = useState([
-    { id: '1', farmerName: 'Ramesh Patil', cropName: 'Soybean', grade: 'A', location: 'Latur', unit: 'Quintals', requiredQuantity: 60, suppliedQuantity: 45, basePrice: 4600, highestBid: 4850, currentBuyer: 'Marico Industries' },
-    { id: '2', farmerName: 'Sanjay Deshmukh', cropName: 'Cotton', grade: 'A', location: 'Yavatmal', unit: 'Quintals', requiredQuantity: 80, suppliedQuantity: 20, basePrice: 6800, highestBid: null, currentBuyer: null },
-    { id: '3', farmerName: 'Anil Shinde', cropName: 'Onion', grade: 'B', location: 'Nashik', unit: 'Quintals', requiredQuantity: 150, suppliedQuantity: 120, basePrice: 1500, highestBid: 1620, currentBuyer: 'BigBasket Wholesale' },
-    { id: '4', farmerName: 'Vikas Joshi', cropName: 'Turmeric', grade: 'A', location: 'Sangli', unit: 'Quintals', requiredQuantity: 40, suppliedQuantity: 15, basePrice: 7200, highestBid: null, currentBuyer: null }
-  ]);
+  // Listings now come from the shared, localStorage-backed store — the
+  // same data farmers publish via CropRegistration shows up here live,
+  // and persists across reloads/tabs of this browser.
+  //
+  // NOTE ON MODELING: a farmer's listing only records the quantity they
+  // have available for sale (`quantity`), not a buyer-side demand figure.
+  // Until there's a real order/matching system, we treat the full listed
+  // quantity as the "requirement" and show 0 as supplied so far, so the
+  // Price Progress section has something meaningful to render.
+  const rawListings = useSyncExternalStore(listingsStore.subscribe, listingsStore.getListings);
+  const auctions = rawListings.map((listing) => ({
+    id: listing.id,
+    farmerName: listing.farmerName,
+    cropName: listing.cropName,
+    grade: listing.grade,
+    location: listing.location,
+    unit: listing.unit,
+    requiredQuantity: listing.quantity,
+    suppliedQuantity: 0,
+    basePrice: listing.minAskingPrice,
+    highestBid: listing.highestBid,
+    currentBuyer: listing.currentBuyer
+  }));
 
   // ML price forecast mock, tied to the same crops/districts above
   const mlPredictions = [
@@ -244,12 +259,7 @@ export default function BuyerDash({ language = 'en' }) {
       return;
     }
 
-    const updatedAuctions = auctions.map(crop =>
-      crop.id === selectedAuction.id
-        ? { ...crop, highestBid: amount, currentBuyer: 'Your Firm (Demo Wholesaler)' }
-        : crop
-    );
-    setAuctions(updatedAuctions);
+    listingsStore.placeBid(selectedAuction.id, amount, 'Your Firm (Demo Wholesaler)');
 
     setMyBids(prev => [
       { id: Date.now(), crop: selectedAuction.cropName, grade: selectedAuction.grade, amount, quantity: selectedAuction.requiredQuantity, unit: selectedAuction.unit, status: t.leading },
