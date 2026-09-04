@@ -70,14 +70,14 @@ export const listingsStore = {
   addListing(cropData) {
     const newListing = {
       id: Date.now().toString(),
-      cropName: cropData.cropName === 'Other' ? cropData.customCropName : cropData.cropName,
+      cropName: cropData.cropName === 'Other' ? cropData.cropNameOther : cropData.cropName,
       variety: cropData.variety || '',
       grade: cropData.selfDeclaredGrade || 'Pending verification',
-      quantity: parseFloat(cropData.totalQuantity) || 0,
+      quantity: parseFloat(cropData.quantity) || 0,
       unit: cropData.quantityUnit || 'quintal',
       minAskingPrice: parseFloat(cropData.minAskingPrice) || 0,
-      location: cropData.district || cropData.villageTaluk || 'Maharashtra',
-      farmerName: cropData.farmerName || 'Farmer',
+      location: cropData.district || cropData.village || 'Maharashtra',
+      farmerName: cropData.sellerName || 'Farmer',
       verified: false,
       highestBid: null,
       currentBuyer: null
