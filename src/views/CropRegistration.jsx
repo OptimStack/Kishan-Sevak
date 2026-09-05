@@ -4,7 +4,7 @@ import {
   CheckCircle2, ArrowLeft, Loader2, User, Phone, ShieldCheck, Users,
   Landmark, Camera, CalendarDays, Wallet, ClipboardCheck, Sparkles
 } from 'lucide-react';
-import { listingsStore } from "#views";
+import { listingsStore } from './ListingsStore';
 
 const translations = {
   en: {
@@ -534,30 +534,30 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn pb-12">
 
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors border border-slate-200"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 transition-colors border border-slate-200 dark:border-slate-700"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{t.heading}</h1>
-            <p className="text-slate-500 text-xs">{t.subheading}</p>
+            <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">{t.heading}</h1>
+            <p className="text-slate-500 dark:text-slate-400 text-xs">{t.subheading}</p>
           </div>
         </div>
-        <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">
+        <span className="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-100 dark:border-emerald-900 uppercase tracking-wider">
           {t.badge}
         </span>
       </div>
 
       {showSuccess && (
-        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3.5 rounded-xl shadow-sm">
-          <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+        <div className="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 px-4 py-3.5 rounded-xl shadow-sm">
+          <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
           <div>
             <p className="text-sm font-bold">{t.successTitle}</p>
-            <p className="text-xs text-emerald-600">{t.successBody}</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400">{t.successBody}</p>
           </div>
         </div>
       )}
@@ -567,31 +567,31 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
         <div className="md:col-span-2 space-y-6">
 
           {/* 1. eNWR Verification & Auto-Fill */}
-          <div className="bg-white rounded-xl border-2 border-emerald-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <Warehouse className="h-4 w-4 text-emerald-600" /> {t.section6}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-emerald-200 dark:border-emerald-800 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <Warehouse className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section6}
             </h3>
-            <p className="text-xs text-slate-500 leading-normal flex items-start gap-1.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal flex items-start gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
               <span>{t.enwrIntro}</span>
             </p>
 
-            <div className="border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-xl p-6 transition-all text-center bg-slate-50/50">
-              <FileText className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+            <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 rounded-xl p-6 transition-all text-center bg-slate-50/50 dark:bg-slate-800/50">
+              <FileText className="h-8 w-8 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
               <input
                 type="file" accept=".pdf,.jpg,.png" onChange={handleEnwrFileChange}
                 name="enwrFile" id="enwr-upload" className="hidden"
               />
               <label htmlFor="enwr-upload" className="cursor-pointer block">
-                <span className="text-sm font-bold text-emerald-600 hover:text-emerald-700 block">
+                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-400 block">
                   {formData.enwrFile ? formData.enwrFile.name : t.enwrUpload}
                 </span>
-                <span className="text-[11px] text-slate-400 block mt-1">{t.enwrUploadHint}</span>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 block mt-1">{t.enwrUploadHint}</span>
               </label>
             </div>
 
             {enwrAutoFilled && (
-              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-2 rounded-lg animate-fadeIn">
+              <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-semibold px-3 py-2 rounded-lg animate-fadeIn">
                 <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0" />
                 <span>{t.enwrAutoFilledBanner}</span>
               </div>
@@ -599,55 +599,55 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.enwrNumber}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.enwrNumber}</label>
                 <input
                   type="text" name="enwrNumber" value={formData.enwrNumber} onChange={handleInputChange}
                   placeholder={t.enwrNumberPlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.enwrQuantity}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.enwrQuantity}</label>
                 <input
                   type="number" name="enwrQuantity" value={formData.enwrQuantity} onChange={handleInputChange} min="0"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.storageType}</label>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.storageType}</label>
               <input
                 type="text" name="storageType" value={formData.storageType} onChange={handleInputChange}
                 placeholder={t.storageTypePlaceholder}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
               />
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3">
+            <div className="bg-slate-50 dark:bg-slate-950 rounded-xl p-4 border border-slate-100 dark:border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-start gap-2">
-                  <Landmark className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <Landmark className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
                   <div>
-                    <label htmlFor="msambPledgeLoan" className="text-sm font-bold text-slate-800 block cursor-pointer">{t.pledgeLoanLabel}</label>
-                    <span className="text-xs text-slate-400 block">{t.pledgeLoanHint}</span>
+                    <label htmlFor="msambPledgeLoan" className="text-sm font-bold text-slate-800 dark:text-slate-200 block cursor-pointer">{t.pledgeLoanLabel}</label>
+                    <span className="text-xs text-slate-400 dark:text-slate-500 block">{t.pledgeLoanHint}</span>
                   </div>
                 </div>
                 <input
                   type="checkbox" id="msambPledgeLoan" name="msambPledgeLoan" checked={formData.msambPledgeLoan} onChange={handleInputChange}
-                  className="h-4 w-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 flex-shrink-0"
+                  className="h-4 w-4 text-emerald-600 dark:text-emerald-400 border-slate-300 dark:border-slate-600 rounded focus:ring-emerald-500 flex-shrink-0"
                 />
               </div>
 
               {formData.msambPledgeLoan && (
                 <div className="animate-fadeIn pt-1">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.pledgeLoanAmount}</label>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.pledgeLoanAmount}</label>
                   <div className="relative">
-                    <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                     <input
                       type="number" name="pledgeLoanAmount" value={formData.pledgeLoanAmount} onChange={handleInputChange} min="0"
                       placeholder={t.pledgeLoanAmountPlaceholder}
-                      className="w-full pl-9 pr-3 py-2 border border-slate-200 bg-white rounded-lg text-sm transition-all"
+                      className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm transition-all"
                     />
                   </div>
                 </div>
@@ -656,27 +656,27 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 2. Seller Details */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <User className="h-4 w-4 text-emerald-600" /> {t.section1}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section1}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.sellerName}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.sellerName}</label>
                 <input
                   type="text" name="sellerName" value={formData.sellerName} onChange={handleInputChange} required
                   placeholder={t.sellerNamePlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.phoneNumber}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.phoneNumber}</label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} required
                     placeholder={t.phoneNumberPlaceholder}
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
@@ -684,17 +684,17 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 3. Crop / Product Details */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <Sprout className="h-4 w-4 text-emerald-600" /> {t.section2}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <Sprout className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section2}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.cropName}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.cropName}</label>
                 <select
                   name="cropName" value={formData.cropName} onChange={handleInputChange} required
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 >
                   <option value="" disabled>{t.cropNamePlaceholder}</option>
                   {CROP_OPTIONS.map(crop => (
@@ -704,50 +704,50 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
               </div>
               {formData.cropName === 'Other' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.cropOther}</label>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.cropOther}</label>
                   <input
                     type="text" name="cropNameOther" value={formData.cropNameOther} onChange={handleInputChange} required
                     placeholder={t.cropOtherPlaceholder}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.variety}</label>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.variety}</label>
               <input
                 type="text" name="variety" value={formData.variety} onChange={handleInputChange}
                 placeholder={t.varietyPlaceholder}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.quantity}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.quantity}</label>
                 <div className="relative">
-                  <Scale className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <Scale className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="number" name="quantity" value={formData.quantity} onChange={handleInputChange} required min="0"
                     placeholder="e.g., 50"
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.minQuantity}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.minQuantity}</label>
                 <input
                   type="number" name="minQuantity" value={formData.minQuantity} onChange={handleInputChange} min="0"
                   placeholder="e.g., 10"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.quantityUnit}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.quantityUnit}</label>
                 <select
                   name="quantityUnit" value={formData.quantityUnit} onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 >
                   <option value="kg">{t.unitKg}</option>
                   <option value="quintal">{t.unitQuintal}</option>
@@ -758,22 +758,22 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.availableFrom}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.availableFrom}</label>
                 <div className="relative">
-                  <CalendarDays className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <CalendarDays className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="date" name="availableFrom" value={formData.availableFrom} onChange={handleInputChange} required
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.availableUntil}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.availableUntil}</label>
                 <div className="relative">
-                  <CalendarDays className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <CalendarDays className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="date" name="availableUntil" value={formData.availableUntil} onChange={handleInputChange}
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
@@ -781,57 +781,57 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 4. Quality Verification */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-emerald-600" /> {t.section3}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section3}
             </h3>
-            <p className="text-xs text-slate-500 leading-normal">{t.section3Body}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">{t.section3Body}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-xl p-5 transition-all text-center bg-slate-50/50">
-                <Camera className="h-7 w-7 text-slate-400 mx-auto mb-2" />
+              <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 rounded-xl p-5 transition-all text-center bg-slate-50/50 dark:bg-slate-800/50">
+                <Camera className="h-7 w-7 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
                 <input
                   type="file" accept="image/*" onChange={handleFileChange}
                   name="qualityPhoto" id="quality-photo-upload" className="hidden"
                 />
                 <label htmlFor="quality-photo-upload" className="cursor-pointer block">
-                  <span className="text-sm font-bold text-emerald-600 hover:text-emerald-700 block">
+                  <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-400 block">
                     {formData.qualityPhoto ? formData.qualityPhoto.name : t.photoUpload}
                   </span>
-                  <span className="text-[11px] text-slate-400 block mt-1">{t.photoUploadHint}</span>
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500 block mt-1">{t.photoUploadHint}</span>
                 </label>
               </div>
 
-              <div className="border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-xl p-5 transition-all text-center bg-slate-50/50">
-                <FileText className="h-7 w-7 text-slate-400 mx-auto mb-2" />
+              <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 rounded-xl p-5 transition-all text-center bg-slate-50/50 dark:bg-slate-800/50">
+                <FileText className="h-7 w-7 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
                 <input
                   type="file" accept=".pdf,.doc,.docx,.jpg,.png" onChange={handleFileChange}
                   name="certificateFile" id="cert-upload" className="hidden"
                 />
                 <label htmlFor="cert-upload" className="cursor-pointer block">
-                  <span className="text-sm font-bold text-emerald-600 hover:text-emerald-700 block">
+                  <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-400 block">
                     {formData.certificateFile ? formData.certificateFile.name : t.certUpload}
                   </span>
-                  <span className="text-[11px] text-slate-400 block mt-1">{t.certUploadHint}</span>
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500 block mt-1">{t.certUploadHint}</span>
                 </label>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.certNumber}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.certNumber}</label>
                 <input
                   type="text" name="certificateNumber" value={formData.certificateNumber} onChange={handleInputChange}
                   placeholder={t.certNumberPlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               {!formData.certificateFile && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.selfGrade}</label>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.selfGrade}</label>
                   <select
                     name="selfDeclaredGrade" value={formData.selfDeclaredGrade} onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   >
                     <option value="" disabled>{t.selfGradePlaceholder}</option>
                     <option value="A">{t.gradeA}</option>
@@ -842,37 +842,37 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
               )}
             </div>
 
-            <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-              <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wide">{t.verificationStatus}</span>
-              <span className="block text-sm font-semibold text-amber-600 mt-0.5">{t.verificationStatusValue}</span>
-              <span className="block text-[11px] text-slate-400 mt-1">{t.verificationStatusHint}</span>
+            <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3 border border-slate-100 dark:border-slate-800">
+              <span className="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide">{t.verificationStatus}</span>
+              <span className="block text-sm font-semibold text-amber-600 dark:text-amber-400 mt-0.5">{t.verificationStatusValue}</span>
+              <span className="block text-[11px] text-slate-400 dark:text-slate-500 mt-1">{t.verificationStatusHint}</span>
             </div>
           </div>
 
           {/* 5. FPO / Crop Pooling */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <Users className="h-4 w-4 text-emerald-600" /> {t.section4}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <Users className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section4}
             </h3>
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3">
+            <div className="bg-slate-50 dark:bg-slate-950 rounded-xl p-4 border border-slate-100 dark:border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <label htmlFor="isPoolingEnabled" className="text-sm font-bold text-slate-800 block cursor-pointer">{t.poolingLabel}</label>
-                  <span className="text-xs text-slate-400 block">{t.poolingHint}</span>
+                  <label htmlFor="isPoolingEnabled" className="text-sm font-bold text-slate-800 dark:text-slate-200 block cursor-pointer">{t.poolingLabel}</label>
+                  <span className="text-xs text-slate-400 dark:text-slate-500 block">{t.poolingHint}</span>
                 </div>
                 <input
                   type="checkbox" id="isPoolingEnabled" name="isPoolingEnabled" checked={formData.isPoolingEnabled} onChange={handleInputChange}
-                  className="h-4 w-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500"
+                  className="h-4 w-4 text-emerald-600 dark:text-emerald-400 border-slate-300 dark:border-slate-600 rounded focus:ring-emerald-500"
                 />
               </div>
 
               {formData.isPoolingEnabled && (
                 <div className="animate-fadeIn pt-1">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.poolingSelect}</label>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.poolingSelect}</label>
                   <input
                     type="text" name="poolingFpo" value={formData.poolingFpo} onChange={handleInputChange} required={formData.isPoolingEnabled}
                     placeholder={t.poolingSelectPlaceholder}
-                    className="w-full px-3 py-2 border border-slate-200 bg-white rounded-lg text-sm transition-all"
+                    className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm transition-all"
                   />
                 </div>
               )}
@@ -880,72 +880,72 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 6. Location */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-emerald-600" /> {t.section5}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section5}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.state}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.state}</label>
                 <input
                   type="text" name="state" value={formData.state} onChange={handleInputChange} required
                   placeholder={t.statePlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.district}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.district}</label>
                 <input
                   type="text" name="district" value={formData.district} onChange={handleInputChange} required
                   placeholder={t.districtPlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.village}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.village}</label>
                 <input
                   type="text" name="village" value={formData.village} onChange={handleInputChange}
                   placeholder={t.villagePlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.pickupLocation}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.pickupLocation}</label>
                 <input
                   type="text" name="pickupLocation" value={formData.pickupLocation} onChange={handleInputChange}
                   placeholder={t.pickupLocationPlaceholder}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
             </div>
           </div>
 
           {/* 7. Auction / Pricing */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <IndianRupee className="h-4 w-4 text-emerald-600" /> {t.section7}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <IndianRupee className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section7}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
                   {t.minAskingPrice} (₹ {t.perUnit} {unitLabel})
                 </label>
                 <div className="relative">
-                  <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="number" name="minAskingPrice" value={formData.minAskingPrice} onChange={handleInputChange} required min="0"
                     placeholder="e.g., 4800"
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.targetPrice}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.targetPrice}</label>
                 <div className="relative">
-                  <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <input
                     type="number" name="targetPrice" value={formData.targetPrice} onChange={handleInputChange} min="0"
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
               </div>
@@ -953,15 +953,15 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 8. Delivery / Logistics */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <Truck className="h-4 w-4 text-emerald-600" /> {t.section8}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <Truck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section8}
             </h3>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.deliveryMode}</label>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.deliveryMode}</label>
               <select
                 name="deliveryMode" value={formData.deliveryMode} onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
               >
                 <option value="buyer_pickup">{t.deliveryBuyerPickup}</option>
                 <option value="farmer_delivery">{t.deliveryFarmerDelivery}</option>
@@ -971,35 +971,35 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
 
             {formData.deliveryMode === 'farmer_delivery' && (
               <div className="animate-fadeIn">
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.maxDistance}</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.maxDistance}</label>
                 <input
                   type="number" name="maxDeliveryDistance" value={formData.maxDeliveryDistance} onChange={handleInputChange} min="0"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                  className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.loadingDetails}</label>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.loadingDetails}</label>
               <textarea
                 name="loadingDetails" value={formData.loadingDetails} onChange={handleInputChange} rows="2"
                 placeholder={t.loadingDetailsPlaceholder}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all resize-none"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all resize-none"
               />
             </div>
           </div>
 
           {/* 9. Payment Settlement */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <Wallet className="h-4 w-4 text-emerald-600" /> {t.section9}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <Wallet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section9}
             </h3>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.paymentMethod}</label>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.paymentMethod}</label>
               <select
                 name="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
               >
                 <option value="bank_transfer">{t.paymentBankTransfer}</option>
                 <option value="upi">{t.paymentUpi}</option>
@@ -1009,24 +1009,24 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
             </div>
 
             {formData.paymentMethod === 'cod' ? (
-              <p className="text-xs text-slate-500 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2">{t.codNote}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-lg px-3 py-2">{t.codNote}</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{accountLabel}</label>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{accountLabel}</label>
                   <input
                     type="text" name="accountDetails" value={formData.accountDetails} onChange={handleInputChange} required
                     placeholder={t.accountDetailsPlaceholder}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                    className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                   />
                 </div>
                 {formData.paymentMethod === 'bank_transfer' && (
                   <div className="animate-fadeIn">
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">{t.ifscCode}</label>
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{t.ifscCode}</label>
                     <input
                       type="text" name="ifscCode" value={formData.ifscCode} onChange={handleInputChange} required
                       placeholder={t.ifscCodePlaceholder}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+                      className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
                     />
                   </div>
                 )}
@@ -1035,35 +1035,35 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
           </div>
 
           {/* 10. Final Confirmation */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
-              <ClipboardCheck className="h-4 w-4 text-emerald-600" /> {t.section10}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <ClipboardCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t.section10}
             </h3>
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox" name="confirmOwnership" checked={formData.confirmOwnership} onChange={handleInputChange} required
-                className="h-4 w-4 mt-0.5 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500"
+                className="h-4 w-4 mt-0.5 text-emerald-600 dark:text-emerald-400 border-slate-300 dark:border-slate-600 rounded focus:ring-emerald-500"
               />
-              <span className="text-sm text-slate-700">{t.confirmOwnership}</span>
+              <span className="text-sm text-slate-700 dark:text-slate-300">{t.confirmOwnership}</span>
             </label>
           </div>
         </div>
 
         <div className="md:col-span-1">
-          <div className="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-xl shadow-md p-6 sticky top-24 space-y-6 border border-slate-800">
+          <div className="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-xl shadow-md p-6 sticky top-24 space-y-6 border border-slate-800 dark:border-slate-700">
             <div>
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+              <h3 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-800 dark:border-slate-700 pb-2">
                 {t.ledgerTitle}
               </h3>
 
-              <div className="space-y-3 text-sm border-b border-slate-800 pb-4">
-                <div className="flex justify-between text-slate-400">
+              <div className="space-y-3 text-sm border-b border-slate-800 dark:border-slate-700 pb-4">
+                <div className="flex justify-between text-slate-400 dark:text-slate-500">
                   <span>{t.quantityLedger}</span>
                   <span className="font-mono text-slate-200">
                     {(parseFloat(formData.quantity) || 0).toLocaleString('en-IN')} {unitLabel}
                   </span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-400 dark:text-slate-500">
                   <span>{t.minAskLedger}</span>
                   <span className="font-mono text-slate-200">
                     ₹{(parseFloat(formData.minAskingPrice) || 0).toLocaleString('en-IN')} / {unitLabel}
@@ -1072,12 +1072,12 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
               </div>
 
               <div className="pt-4 flex justify-between items-baseline">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t.finalPrice}</span>
+                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{t.finalPrice}</span>
                 <div className="text-right">
                   <span className="text-2xl font-black font-mono text-emerald-400 block">
                     ₹{formData.finalAskingPrice.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[10px] text-slate-500 block italic mt-0.5">{t.finalPriceNote}</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block italic mt-0.5">{t.finalPriceNote}</span>
                 </div>
               </div>
             </div>
@@ -1102,7 +1102,7 @@ export default function CropRegistration({ onBack, onPublished = () => {}, langu
             <button
               type="button"
               onClick={onBack}
-              className="w-full py-2 bg-transparent hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-medium border border-slate-800 transition-all block text-center"
+              className="w-full py-2 bg-transparent hover:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-white rounded-lg text-xs font-medium border border-slate-800 dark:border-slate-700 transition-all block text-center"
             >
               {t.cancel}
             </button>

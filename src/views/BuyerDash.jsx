@@ -3,7 +3,7 @@ import {
   Search, MapPin, Scale, IndianRupee, Gavel, Filter, Building,
   CheckCircle2, AlertTriangle, TrendingUp, TrendingDown, Sparkles, X
 } from 'lucide-react';
-import { listingsStore } from "#views";
+import { listingsStore } from './ListingsStore';
 
 const translations = {
   en: {
@@ -276,36 +276,36 @@ export default function BuyerDash({ language = 'en' }) {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{t.title}</h1>
-          <p className="text-slate-500 mt-1 text-sm">{t.subtitle}</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">{t.title}</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">{t.subtitle}</p>
         </div>
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-xl">
-          <MapPin className="h-4 w-4 text-emerald-600" />
+        <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900 px-4 py-2 rounded-xl">
+          <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wide">{t.regionLabel}</p>
-            <p className="font-semibold text-emerald-700 text-sm">{t.regionValue}</p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wide">{t.regionLabel}</p>
+            <p className="font-semibold text-emerald-700 dark:text-emerald-400 text-sm">{t.regionValue}</p>
           </div>
         </div>
       </div>
 
       {/* Search + Filter */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white transition-all"
+            className="w-full pl-9 pr-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 transition-all"
           />
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <Filter className="h-4 w-4 text-slate-400" />
+          <Filter className="h-4 w-4 text-slate-400 dark:text-slate-500" />
           <select
             value={selectedDistrict}
             onChange={(e) => setSelectedDistrict(e.target.value)}
-            className="px-3 py-2 border border-slate-200 bg-white rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 font-medium text-slate-700"
+            className="px-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 font-medium text-slate-700 dark:text-slate-300"
           >
             {districts.map((district, idx) => (
               <option key={idx} value={district}>
@@ -323,73 +323,73 @@ export default function BuyerDash({ language = 'en' }) {
         <section>
           <div className="mb-5">
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold text-slate-900">{t.biddingTitle}</h2>
-              <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{t.biddingTitle}</h2>
+              <span className="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-100 dark:border-emerald-900 uppercase tracking-wider">
                 {t.live}
               </span>
             </div>
-            <p className="text-slate-500 text-sm mt-1">{t.biddingSubtitle}</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{t.biddingSubtitle}</p>
           </div>
 
           <div className="space-y-4">
             {filteredAuctions.map((auction) => (
-              <div key={auction.id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all p-5">
-                <div className="flex justify-between items-start border-b border-slate-100 pb-3 mb-4">
+              <div key={auction.id} className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all p-5">
+                <div className="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-lg text-slate-900">{auction.cropName}</h3>
-                      <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-2 py-0.5 rounded-md">
+                      <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{auction.cropName}</h3>
+                      <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold px-2 py-0.5 rounded-md">
                         {t.grade} {auction.grade}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                    <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1 mt-0.5">
                       <Building className="h-3 w-3" /> {t.listedBy} {auction.farmerName}
                     </p>
-                    <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                    <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1 mt-0.5">
                       <MapPin className="h-3 w-3" /> {auction.location}
                     </p>
                   </div>
-                  <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">
+                  <span className="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900 uppercase tracking-wider">
                     {t.live}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-slate-50 rounded-lg p-3">
-                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">{t.buyerRequirement}</p>
-                    <p className="font-bold text-slate-800 text-sm mt-1">{auction.requiredQuantity} {auction.unit}</p>
+                  <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-3">
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-tight">{t.buyerRequirement}</p>
+                    <p className="font-bold text-slate-800 dark:text-slate-200 text-sm mt-1">{auction.requiredQuantity} {auction.unit}</p>
                   </div>
-                  <div className="bg-emerald-50 rounded-lg p-3">
-                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">{t.currentBestBid}</p>
-                    <p className="font-bold text-emerald-700 text-sm mt-1">
+                  <div className="bg-emerald-50 dark:bg-emerald-950/40 rounded-lg p-3">
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-tight">{t.currentBestBid}</p>
+                    <p className="font-bold text-emerald-700 dark:text-emerald-400 text-sm mt-1">
                       {auction.highestBid ? `₹${auction.highestBid.toLocaleString('en-IN')}` : '—'}
                     </p>
                   </div>
                 </div>
 
                 {!auction.highestBid && (
-                  <p className="text-xs text-slate-400 italic text-center bg-slate-50 border border-dashed border-slate-200 rounded-lg py-1.5 mt-3">
+                  <p className="text-xs text-slate-400 dark:text-slate-500 italic text-center bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-200 dark:border-slate-700 rounded-lg py-1.5 mt-3">
                     {t.noBids}
                   </p>
                 )}
 
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-xs text-slate-400">{t.startingBid}</span>
-                  <span className="text-sm font-medium text-slate-600">
+                  <span className="text-xs text-slate-400 dark:text-slate-500">{t.startingBid}</span>
+                  <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
                     ₹{auction.basePrice.toLocaleString('en-IN')} {t.perQtl}
                   </span>
                 </div>
 
                 <button
                   onClick={() => openBidModal(auction)}
-                  className="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2"
+                  className="w-full mt-4 bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2"
                 >
                   <Gavel className="h-4 w-4" /> {t.placeBid}
                 </button>
 
                 {statusMessage && statusMessage.cropId === auction.id && (
                   <div className={`flex items-start gap-2 mt-3 p-2.5 rounded-lg text-xs font-medium border ${
-                    statusMessage.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-rose-50 border-rose-100 text-rose-800'
+                    statusMessage.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-100 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300' : 'bg-rose-50 dark:bg-rose-950/40 border-rose-100 dark:border-rose-900 text-rose-800 dark:text-rose-300'
                   }`}>
                     {statusMessage.type === 'success' ? (
                       <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
@@ -407,8 +407,8 @@ export default function BuyerDash({ language = 'en' }) {
         {/* Price Progress */}
         <section>
           <div className="mb-5">
-            <h2 className="text-xl font-bold text-slate-900">{t.progressTitle}</h2>
-            <p className="text-slate-500 text-sm mt-1">{t.progressSubtitle}</p>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{t.progressTitle}</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{t.progressSubtitle}</p>
           </div>
 
           <div className="space-y-4">
@@ -417,28 +417,28 @@ export default function BuyerDash({ language = 'en' }) {
               const remaining = auction.requiredQuantity - auction.suppliedQuantity;
 
               return (
-                <div key={auction.id} className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <div key={auction.id} className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-bold text-lg text-slate-900">{auction.cropName}</h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{auction.cropName}</h3>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
                         {t.grade} {auction.grade} • {auction.location}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-emerald-600">{Math.round(progress)}%</p>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-wide">{t.fulfilled}</p>
+                      <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{Math.round(progress)}%</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wide">{t.fulfilled}</p>
                     </div>
                   </div>
 
                   <div className="mt-4">
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs text-slate-500">{t.orderFulfillment}</span>
-                      <span className="text-xs font-semibold text-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">{t.orderFulfillment}</span>
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                         {auction.suppliedQuantity} / {auction.requiredQuantity} {auction.unit}
                       </span>
                     </div>
-                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                         style={{ width: `${Math.min(progress, 100)}%` }}
@@ -447,19 +447,19 @@ export default function BuyerDash({ language = 'en' }) {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 mt-4">
-                    <div className="bg-emerald-50 rounded-lg p-3">
-                      <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">{t.supplied}</p>
-                      <p className="text-lg font-bold text-emerald-600 mt-0.5">{auction.suppliedQuantity} {auction.unit}</p>
+                    <div className="bg-emerald-50 dark:bg-emerald-950/40 rounded-lg p-3">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-tight">{t.supplied}</p>
+                      <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{auction.suppliedQuantity} {auction.unit}</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-3">
-                      <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">{t.remaining}</p>
-                      <p className="text-lg font-bold text-amber-600 mt-0.5">{Math.max(remaining, 0)} {auction.unit}</p>
+                    <div className="bg-amber-50 dark:bg-amber-950/40 rounded-lg p-3">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-tight">{t.remaining}</p>
+                      <p className="text-lg font-bold text-amber-600 dark:text-amber-400 mt-0.5">{Math.max(remaining, 0)} {auction.unit}</p>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-100">
-                    <span className="text-xs text-slate-500">{t.currentBid}</span>
-                    <span className="font-bold text-slate-900 text-sm">
+                  <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{t.currentBid}</span>
+                    <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">
                       {auction.highestBid ? `₹${auction.highestBid.toLocaleString('en-IN')} ${t.perQtl}` : '—'}
                     </span>
                   </div>
@@ -475,28 +475,28 @@ export default function BuyerDash({ language = 'en' }) {
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-5">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold text-slate-900">{t.mlTitle}</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{t.mlTitle}</h2>
               <span className="flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
                 <Sparkles className="h-3 w-3" /> {t.aiBadge}
               </span>
             </div>
-            <p className="text-slate-500 text-sm mt-1">{t.mlSubtitle}</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{t.mlSubtitle}</p>
           </div>
-          <div className="text-sm text-slate-500 bg-white border border-slate-200 px-4 py-2 rounded-xl">
+          <div className="text-sm text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl">
             {t.marketsBadge}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {mlPredictions.map((prediction) => (
-            <div key={prediction.id} className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <div key={prediction.id} className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-bold text-lg text-slate-900">{prediction.crop}</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">{t.verifiedGrade} {prediction.grade}</p>
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{prediction.crop}</h3>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{t.verifiedGrade} {prediction.grade}</p>
                 </div>
                 <span className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                  prediction.trend === 'up' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+                  prediction.trend === 'up' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400'
                 }`}>
                   {prediction.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                   {prediction.trend === 'up' ? t.rising : t.falling}
@@ -504,30 +504,30 @@ export default function BuyerDash({ language = 'en' }) {
               </div>
 
               <div className="mt-5">
-                <p className="text-xs text-slate-400 uppercase font-bold tracking-tight">{t.currentMandiPrice}</p>
-                <p className="text-2xl font-black text-slate-900 mt-1">₹{prediction.currentPrice.toLocaleString('en-IN')}</p>
-                <p className="text-[11px] text-slate-400">{t.perQtlShort}</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-tight">{t.currentMandiPrice}</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-slate-100 mt-1">₹{prediction.currentPrice.toLocaleString('en-IN')}</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500">{t.perQtlShort}</p>
               </div>
 
               <div className="mt-4 bg-blue-50 rounded-lg p-3">
-                <p className="text-xs text-slate-500">{t.predictedNextMonth}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{t.predictedNextMonth}</p>
                 <p className="text-xl font-bold text-blue-600 mt-0.5">₹{prediction.predictedPrice.toLocaleString('en-IN')}</p>
-                <p className="text-[11px] text-slate-500">{t.perQtlShort}</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">{t.perQtlShort}</p>
               </div>
 
               <div className="mt-4">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-xs text-slate-500">{t.predictionConfidence}</span>
-                  <span className="text-xs font-bold text-slate-900">{prediction.confidence}%</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">{t.predictionConfidence}</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100">{prediction.confidence}%</span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-1.5">
+                <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
                   <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: `${prediction.confidence}%` }} />
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                <span className="text-xs font-semibold text-slate-700">{prediction.location}</span>
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{prediction.location}</span>
               </div>
             </div>
           ))}
@@ -538,25 +538,25 @@ export default function BuyerDash({ language = 'en' }) {
       {myBids.length > 0 && (
         <section>
           <div className="mb-5">
-            <h2 className="text-xl font-bold text-slate-900">{t.myBidsTitle}</h2>
-            <p className="text-slate-500 text-sm mt-1">{t.myBidsSubtitle}</p>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{t.myBidsTitle}</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{t.myBidsSubtitle}</p>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             {myBids.map((bid) => (
-              <div key={bid.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-4 border-b border-slate-100 last:border-b-0">
+              <div key={bid.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-4 border-b border-slate-100 dark:border-slate-800 last:border-b-0">
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="font-bold text-slate-900 text-sm">{bid.crop}</p>
-                    <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-semibold">
+                    <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">{bid.crop}</p>
+                    <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md text-[10px] font-semibold">
                       {t.grade} {bid.grade}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">{t.quantity}: {bid.quantity} {bid.unit}</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{t.quantity}: {bid.quantity} {bid.unit}</p>
                 </div>
                 <div className="sm:text-right">
-                  <p className="text-lg font-bold text-emerald-600">₹{bid.amount.toLocaleString('en-IN')}</p>
-                  <span className="text-xs font-semibold text-emerald-600">● {bid.status}</span>
+                  <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">₹{bid.amount.toLocaleString('en-IN')}</p>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">● {bid.status}</span>
                 </div>
               </div>
             ))}
@@ -567,40 +567,40 @@ export default function BuyerDash({ language = 'en' }) {
       {/* Bid Modal */}
       {selectedAuction && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-5 z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-xl">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">{t.modalTitle}</h2>
-                <p className="text-slate-500 text-sm mt-1">{selectedAuction.cropName} • {t.grade} {selectedAuction.grade}</p>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{t.modalTitle}</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{selectedAuction.cropName} • {t.grade} {selectedAuction.grade}</p>
               </div>
-              <button type="button" onClick={closeBidModal} className="text-slate-400 hover:text-slate-700">
+              <button type="button" onClick={closeBidModal} className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <p className="text-sm text-slate-500 flex items-center gap-1 mt-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-4">
               <MapPin className="h-3.5 w-3.5" /> {selectedAuction.location}
             </p>
 
-            <div className="bg-emerald-50 rounded-xl p-4 mt-4">
-              <p className="text-xs text-slate-500">{t.currentBestBid}</p>
-              <p className="text-2xl font-black text-emerald-700 mt-1">
+            <div className="bg-emerald-50 dark:bg-emerald-950/40 rounded-xl p-4 mt-4">
+              <p className="text-xs text-slate-500 dark:text-slate-400">{t.currentBestBid}</p>
+              <p className="text-2xl font-black text-emerald-700 dark:text-emerald-400 mt-1">
                 {selectedAuction.highestBid ? `₹${selectedAuction.highestBid.toLocaleString('en-IN')}` : `₹${selectedAuction.basePrice.toLocaleString('en-IN')}`}
               </p>
-              <p className="text-[11px] text-slate-500">{t.perQtlShort}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">{t.perQtlShort}</p>
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 mt-3">
-              <p className="text-xs text-slate-500">{t.modalRequirement}</p>
-              <p className="font-bold text-slate-900 mt-1 text-sm">{selectedAuction.requiredQuantity} {selectedAuction.unit}</p>
+            <div className="bg-slate-50 dark:bg-slate-950 rounded-xl p-4 mt-3">
+              <p className="text-xs text-slate-500 dark:text-slate-400">{t.modalRequirement}</p>
+              <p className="font-bold text-slate-900 dark:text-slate-100 mt-1 text-sm">{selectedAuction.requiredQuantity} {selectedAuction.unit}</p>
             </div>
 
             <div className="mt-4">
-              <label htmlFor="bidAmount" className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+              <label htmlFor="bidAmount" className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 {t.yourBid}
               </label>
               <div className="relative mt-1.5">
-                <IndianRupee className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <IndianRupee className="absolute left-3 top-3 h-4 w-4 text-slate-400 dark:text-slate-500" />
                 <input
                   id="bidAmount"
                   type="number"
@@ -608,13 +608,13 @@ export default function BuyerDash({ language = 'en' }) {
                   value={bidAmount}
                   onChange={(e) => setBidAmount(e.target.value)}
                   placeholder={`${t.minimumPrefix}${((selectedAuction.highestBid || selectedAuction.basePrice) + 1).toLocaleString('en-IN')}`}
-                  className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full pl-9 pr-3 py-2.5 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                 />
               </div>
             </div>
 
             {statusMessage && statusMessage.cropId === selectedAuction.id && statusMessage.type === 'error' && (
-              <div className="flex items-start gap-2 mt-3 p-2.5 rounded-lg text-xs font-medium border bg-rose-50 border-rose-100 text-rose-800">
+              <div className="flex items-start gap-2 mt-3 p-2.5 rounded-lg text-xs font-medium border bg-rose-50 dark:bg-rose-950/40 border-rose-100 dark:border-rose-900 text-rose-800 dark:text-rose-300">
                 <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
                 <span>{statusMessage.text}</span>
               </div>
@@ -631,7 +631,7 @@ export default function BuyerDash({ language = 'en' }) {
             <button
               type="button"
               onClick={closeBidModal}
-              className="w-full mt-2 text-slate-500 hover:text-slate-700 py-2 text-sm font-medium"
+              className="w-full mt-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 py-2 text-sm font-medium"
             >
               {t.cancel}
             </button>
