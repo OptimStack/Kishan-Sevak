@@ -4,7 +4,7 @@ import {
   CheckCircle2, ArrowLeft, Loader2, User, Phone, ShieldCheck, Users,
   Landmark, Camera, CalendarDays, Wallet, ClipboardCheck, Sparkles
 } from 'lucide-react';
-import { listingsStore } from './ListingsStore';
+import { listingsStore } from './ListingsStore.js';
 
 const translations = {
   en: {

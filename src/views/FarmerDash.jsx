@@ -1,6 +1,6 @@
 import React, { useSyncExternalStore } from 'react';
-import { PlusCircle, TrendingUp } from 'lucide-react';
-import { listingsStore } from './ListingsStore';
+import { PlusCircle, TrendingUp, MapPin, Building, IndianRupee, Scale } from 'lucide-react';
+import { listingsStore } from './ListingsStore.js';
 
 const translations = {
   en: {
@@ -11,7 +11,12 @@ const translations = {
     aiInsights: "AI Price Forecasting Engine (Model.py)",
     aiNote: "Our Random Forest Regressor evaluates market arrivals and rainfall indices to forecast future prices.",
     noBids: "Waiting for buyer bids...",
-    activeBid: "Highest Bid: "
+    activeBid: "Highest Bid: ",
+    grade: "Grade",
+    buyerReqTitle: "Buyer Requirements",
+    buyerReqSubtitle: "See what buyers in your region are currently looking for",
+    requiredQty: "Required Quantity",
+    offeredPrice: "Offered Price"
   },
   mr: {
     title: "शेतकरी डॅशबोर्ड",
@@ -21,7 +26,12 @@ const translations = {
     aiInsights: "AI किंमत अंदाज इंजिन (Model.py)",
     aiNote: "आमचे मॉडेल प्रादेशिक किमतींचा अंदाज लावण्यासाठी बाजारातील आवक आणि पावसाच्या निर्देशांकाचे विश्लेषण करते.",
     noBids: "खरेदीदार बोलीची वाट पाहत आहे...",
-    activeBid: "सर्वोच्च बोली: "
+    activeBid: "सर्वोच्च बोली: ",
+    grade: "दर्जा",
+    buyerReqTitle: "खरेदीदारांची आवश्यकता",
+    buyerReqSubtitle: "तुमच्या भागातील खरेदीदार सध्या काय शोधत आहेत ते पहा",
+    requiredQty: "आवश्यक प्रमाण",
+    offeredPrice: "देऊ केलेली किंमत"
   },
   hi: {
     title: "किसान डैशबोर्ड",
@@ -31,7 +41,12 @@ const translations = {
     aiInsights: "एआई मूल्य पूर्वानुमान इंजन (Model.py)",
     aiNote: "हमारा मॉडल क्षेत्रीय कीमतों का अनुमान लगाने के लिए बाजार आवक और वर्षा सूचकांकों का विश्लेषण करता है।",
     noBids: "खरीदार की बोली का इंतजार है...",
-    activeBid: "उच्चतम बोली: "
+    activeBid: "उच्चतम बोली: ",
+    grade: "ग्रेड",
+    buyerReqTitle: "खरीदार आवश्यकताएं",
+    buyerReqSubtitle: "देखें कि आपके क्षेत्र के खरीदार अभी क्या खोज रहे हैं",
+    requiredQty: "आवश्यक मात्रा",
+    offeredPrice: "प्रस्तावित कीमत"
   }
 };
 
@@ -50,6 +65,14 @@ export default function FarmerDash({ language = 'en', navigateToRegister }) {
   const aiPredictions = [
     { crop: 'Soybean', currentMandi: 4650, predictedNextMonth: 5100, trend: 'up', confidence: '94%', recommendation: 'Hold harvest. Prices expected to rise by 9.6% due to lower market arrival projections.' },
     { crop: 'Cotton', currentMandi: 7100, predictedNextMonth: 6750, trend: 'down', confidence: '89%', recommendation: 'Sell immediately. High international supply loops are expected to depress regional rates.' }
+  ];
+
+  // Mirrors the "Buyer Requirement" data buyers see on their own dashboard —
+  // shown here so farmers can see live demand before deciding what to list.
+  const buyerRequirements = [
+    { crop: 'Soybean', grade: 'A', requiredQuantity: 60, unit: 'Quintals', location: 'Latur', offeredPrice: 4850, buyerName: 'Marico Industries' },
+    { crop: 'Cotton', grade: 'A', requiredQuantity: 80, unit: 'Quintals', location: 'Yavatmal', offeredPrice: 6800, buyerName: 'Welspun Textiles' },
+    { crop: 'Onion', grade: 'B', requiredQuantity: 150, unit: 'Quintals', location: 'Nashik', offeredPrice: 1620, buyerName: 'BigBasket Wholesale' }
   ];
 
   return (
@@ -116,13 +139,55 @@ export default function FarmerDash({ language = 'en', navigateToRegister }) {
             </div>
           </div>
 
-          <div className="border border-indigo-100 dark:border-indigo-900 bg-gradient-to-br from-indigo-50/30 dark:from-indigo-950/20 to-slate-50/50 dark:to-slate-900/40 rounded-xl p-6 shadow-sm">
+          {/* Buyer Requirements */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+            <h2 className="font-semibold text-base text-slate-800 dark:text-slate-200 mb-1">{t.buyerReqTitle}</h2>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mb-4">{t.buyerReqSubtitle}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {buyerRequirements.map((req, i) => (
+                <div key={i} className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm p-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm">{req.crop}</h4>
+                    <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                      {t.grade} {req.grade}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 flex items-center gap-1 mb-0.5">
+                    <Building className="h-3 w-3" /> {req.buyerName}
+                  </p>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                    <MapPin className="h-3 w-3" /> {req.location}
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2 mt-3 bg-slate-50/70 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-100/50 dark:border-slate-800/50">
+                    <div className="flex items-start gap-1.5">
+                      <Scale className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 block uppercase font-bold tracking-tight">{t.requiredQty}</span>
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{req.requiredQuantity} {req.unit}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <IndianRupee className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 block uppercase font-bold tracking-tight">{t.offeredPrice}</span>
+                        <span className="text-xs font-black text-emerald-700 dark:text-emerald-400">₹{req.offeredPrice}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border border-emerald-100 dark:border-emerald-900 bg-gradient-to-br from-emerald-50/30 dark:from-emerald-950/20 to-slate-50/50 dark:to-slate-900/40 rounded-xl p-6 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                <h2 className="font-semibold text-base text-indigo-950 dark:text-indigo-200">{t.aiInsights}</h2>
+                <TrendingUp className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <h2 className="font-semibold text-base text-emerald-950 dark:text-emerald-200">{t.aiInsights}</h2>
               </div>
-              <span className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+              <span className="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
                 R-Forest Pipeline Active
               </span>
             </div>
@@ -147,12 +212,12 @@ export default function FarmerDash({ language = 'en', navigateToRegister }) {
                       </div>
                       <div>
                         <span className="text-[10px] text-slate-400 dark:text-slate-500 block uppercase font-bold tracking-tight">AI Projection</span>
-                        <span className="text-xs font-black text-indigo-600 dark:text-indigo-400">₹{pred.predictedNextMonth} / Qtl</span>
+                        <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">₹{pred.predictedNextMonth} / Qtl</span>
                       </div>
                     </div>
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 p-2 rounded-lg border-l-2 border-indigo-500 leading-normal mt-2">
-                    <span className="font-bold text-indigo-900 dark:text-indigo-200 block mb-0.5">Model Recommendation (Acc: {pred.confidence}):</span>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 p-2 rounded-lg border-l-2 border-emerald-500 leading-normal mt-2">
+                    <span className="font-bold text-emerald-900 dark:text-emerald-200 block mb-0.5">Model Recommendation (Acc: {pred.confidence}):</span>
                     {pred.recommendation}
                   </div>
                 </div>
