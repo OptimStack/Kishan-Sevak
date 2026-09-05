@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Leaf, Globe, User, Bell, ChevronDown } from 'lucide-react';
+import { Globe, User, Bell, ChevronDown, Moon, Sun, LogOut } from 'lucide-react';
 
-export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
+export default function Navbar({ currentRole, setRole, onLogout, currentLang, setLang, isDarkMode, setIsDarkMode }) {
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
 
   const roles = [
     { id: 'farmer', label: 'Farmer Dashboard (शेतकरी)' },
-    { id: 'buyer', label: 'Buyer Marketplace (खरेदीदार)' },
-    { id: 'admin', label: 'Govt Admin Portal (प्रशासक)' }
+    { id: 'buyer', label: 'Buyer Marketplace (खरेदीदार)' }
   ];
 
   const languages = [
@@ -18,35 +17,35 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
   ];
 
   return (
-    <nav className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className="sticky top-0 z-50 bg-[#174f46] text-white shadow-md">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-2">
           
           {/* Left Side: Brand Logo and Title */}
-          <div className="flex items-center space-x-3 cursor-pointer">
-            <div className="bg-white p-2 rounded-full text-emerald-700">
-              <Leaf className="h-6 w-6" />
+          <div className="flex min-w-0 items-center gap-2.5 cursor-pointer">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1 text-emerald-700 sm:h-10 sm:w-10">
+              <img src="/AgroFPO.svg" alt="KrishiSetu logo" className="h-full w-full object-contain" />
             </div>
-            <div>
-              <span className="font-bold text-xl tracking-wide block leading-tight">
-                KrishiLink
+            <div className="min-w-0">
+              <span className="block truncate text-base font-bold leading-tight tracking-wide sm:text-xl">
+                KrishiSetu
               </span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-6">    
+          <div className="flex items-center gap-1.5 sm:gap-4">    
             <div className="relative">
               <button 
                 onClick={() => { setIsRoleDropdownOpen(!isRoleDropdownOpen); setIsLangDropdownOpen(false); }}
-                className="flex items-center space-x-2 bg-emerald-800 hover:bg-emerald-950 px-4 py-2 rounded-lg text-sm font-medium border border-emerald-600 transition-colors"
+                className="flex items-center gap-1.5 rounded-lg border border-[#3b756b] bg-[#123f39] px-2 py-2 text-xs font-medium transition-colors hover:bg-[#0d302b] sm:gap-2 sm:px-3 sm:text-sm"
               >
                 <User className="h-4 w-4 text-emerald-300" />
-                <span>Role: {roles.find(r => r.id === currentRole)?.label.split(' ')[0]}</span>
+                <span className="max-w-[62px] truncate sm:max-w-none">{roles.find(r => r.id === currentRole)?.label.split(' ')[0]}</span>
                 <ChevronDown className="h-4 w-4 text-emerald-300" />
               </button>
 
               {isRoleDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-1 text-gray-800 border border-gray-200">
+                <div className="absolute right-0 mt-2 w-64 rounded-lg border border-gray-200 bg-white py-1 text-gray-800 shadow-xl dark:border-emerald-800 dark:bg-[#0d241b] dark:text-slate-100">
                   {roles.map((role) => (
                     <button
                       key={role.id}
@@ -54,13 +53,25 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
                         setRole(role.id);
                         setIsRoleDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-2.5 text-sm hover:bg-emerald-50 transition-colors block ${
-                        currentRole === role.id ? 'bg-emerald-50 text-emerald-700 font-semibold' : ''
+                      className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-emerald-50 dark:hover:bg-emerald-950 ${
+                        currentRole === role.id ? 'bg-emerald-50 font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : ''
                       }`}
                     >
                       {role.label}
                     </button>
                   ))}
+                  <div className="my-1 border-t border-gray-100 dark:border-emerald-900" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsRoleDropdownOpen(false);
+                      onLogout();
+                    }}
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm font-medium text-rose-700 transition-colors hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    {currentLang === 'mr' ? 'लॉग आउट' : currentLang === 'hi' ? 'लॉग आउट' : 'Log out'}
+                  </button>
                 </div>
               )}
             </div>
@@ -69,7 +80,7 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
             <div className="relative">
               <button 
                 onClick={() => { setIsLangDropdownOpen(!isLangDropdownOpen); setIsRoleDropdownOpen(false); }}
-                className="flex items-center space-x-2 bg-emerald-800 hover:bg-emerald-950 px-3 py-2 rounded-lg text-sm font-medium border border-emerald-600 transition-colors"
+                className="flex items-center gap-1.5 rounded-lg border border-[#3b756b] bg-[#123f39] px-2 py-2 text-xs font-medium transition-colors hover:bg-[#0d302b] sm:gap-2 sm:px-3 sm:text-sm"
               >
                 <Globe className="h-4 w-4 text-emerald-300" />
                 <span className="uppercase">{currentLang}</span>
@@ -77,7 +88,7 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
               </button>
 
               {isLangDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 text-gray-800 border border-gray-200">
+                <div className="absolute right-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 text-gray-800 shadow-xl dark:border-emerald-800 dark:bg-[#0d241b] dark:text-slate-100">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
@@ -85,8 +96,8 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
                         setLang(lang.code);
                         setIsLangDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-emerald-50 transition-colors block ${
-                        currentLang === lang.code ? 'bg-emerald-50 text-emerald-700 font-semibold' : ''
+                      className={`block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-emerald-50 dark:hover:bg-emerald-950 ${
+                        currentLang === lang.code ? 'bg-emerald-50 font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : ''
                       }`}
                     >
                       {lang.label}
@@ -95,6 +106,16 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
                 </div>
               )}
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsDarkMode((current) => !current)}
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="rounded-full p-2 text-emerald-100 transition-colors hover:bg-emerald-800 hover:text-white focus:outline-none"
+            >
+              {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
 
             {/* 3. Notification Indicator Icon */}
             <button className="relative p-2 text-emerald-100 hover:text-white hover:bg-emerald-800 rounded-full transition-colors focus:outline-none">
