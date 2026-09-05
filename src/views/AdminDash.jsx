@@ -1,6 +1,6 @@
 import React, { useSyncExternalStore } from 'react';
 import { ShieldCheck, Users, Package, CheckCircle2, Clock } from 'lucide-react';
-import { listingsStore } from './Listingsstore.js';
+import { listingsStore } from "#views";
 
 const translations = {
   en: {
