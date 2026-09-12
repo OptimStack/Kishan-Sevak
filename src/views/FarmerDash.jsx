@@ -1,6 +1,6 @@
 import React, { useSyncExternalStore } from 'react';
 import { PlusCircle, TrendingUp, MapPin, Building, IndianRupee, Scale } from 'lucide-react';
-import { listingsStore } from './ListingsStore.js';
+import { listingsStore } from './ListingsStore';
 
 const translations = {
   en: {

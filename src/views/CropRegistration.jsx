@@ -5,7 +5,6 @@ import {
   Landmark, Camera, CalendarDays, Wallet, ClipboardCheck, Sparkles
 } from 'lucide-react';
 import { listingsStore } from './ListingsStore';
-
 const translations = {
   en: {
     heading: "Agricultural Crop Registration",
