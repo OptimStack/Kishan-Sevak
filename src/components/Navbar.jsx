@@ -29,7 +29,7 @@ export default function Navbar({ currentRole, setRole, currentLang, setLang }) {
             </div>
             <div>
               <span className="font-bold text-xl tracking-wide block leading-tight">
-                KrishiLink
+                KrishiSetu
               </span>
             </div>
           </div>

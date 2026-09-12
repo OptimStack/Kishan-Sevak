@@ -181,26 +181,12 @@ const translations = {
 
 export default function BuyerDash({ language = 'en' }) {
   const t = translations[language] || translations.en;
-
-  // Search and filter state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('All');
-
-  // Bid modal state
   const [selectedAuction, setSelectedAuction] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
   const [statusMessage, setStatusMessage] = useState(null);
   const [myBids, setMyBids] = useState([]);
-
-  // Listings now come from the shared, localStorage-backed store — the
-  // same data farmers publish via CropRegistration shows up here live,
-  // and persists across reloads/tabs of this browser.
-  //
-  // NOTE ON MODELING: a farmer's listing only records the quantity they
-  // have available for sale (`quantity`), not a buyer-side demand figure.
-  // Until there's a real order/matching system, we treat the full listed
-  // quantity as the "requirement" and show 0 as supplied so far, so the
-  // Price Progress section has something meaningful to render.
   const rawListings = useSyncExternalStore(listingsStore.subscribe, listingsStore.getListings);
   const auctions = rawListings.map((listing) => ({
     id: listing.id,
@@ -215,8 +201,6 @@ export default function BuyerDash({ language = 'en' }) {
     highestBid: listing.highestBid,
     currentBuyer: listing.currentBuyer
   }));
-
-  // ML price forecast mock, tied to the same crops/districts above
   const mlPredictions = [
     { id: 1, crop: 'Soybean', grade: 'A', currentPrice: 4600, predictedPrice: 5050, trend: 'up', confidence: 94, location: 'Latur, Maharashtra' },
     { id: 2, crop: 'Cotton', grade: 'A', currentPrice: 6800, predictedPrice: 6550, trend: 'down', confidence: 91, location: 'Yavatmal, Maharashtra' },
